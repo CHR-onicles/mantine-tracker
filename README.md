@@ -1,6 +1,4 @@
-# rtsc-template
-
-Personal template for React projects
+# Mantine test
 
 ## Setup checklist
 

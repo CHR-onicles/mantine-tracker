@@ -1,5 +1,5 @@
 {
-  "name": "rtsc-template",
+  "name": "mantine-test",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -15,14 +15,20 @@
     "tsc": "tsc"
   },
   "dependencies": {
-    "@studio-freight/lenis": "^1.0.35",
+    "@mantine/charts": "^7.5.3",
+    "@mantine/core": "^7.5.3",
+    "@mantine/dates": "^7.5.3",
+    "@mantine/form": "^7.5.3",
+    "@mantine/hooks": "^7.5.3",
     "@tanstack/react-query": "^5.20.5",
     "@tanstack/react-query-devtools": "^5.20.5",
     "axios": "^1.6.7",
+    "dayjs": "^1.11.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.0",
     "react-use": "^17.5.0",
+    "recharts": "^2.12.0",
     "styled-components": "^6.1.6"
   },
   "devDependencies": {
@@ -32,7 +38,6 @@
     "@typescript-eslint/eslint-plugin": "^7.0.1",
     "@typescript-eslint/parser": "^7.0.1",
     "@vitejs/plugin-react": "^4.2.1",
-    "@vitest/coverage-v8": "^1.2.2",
     "eslint": "^8.56.0",
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-import": "^2.29.1",
@@ -41,11 +46,13 @@
     "eslint-plugin-simple-import-sort": "^12.0.0",
     "husky": "^8.0.3",
     "lint-staged": "^14.0.1",
+    "postcss": "^8.4.35",
+    "postcss-preset-mantine": "^1.13.0",
+    "postcss-simple-vars": "^7.0.1",
     "typescript": "^5.3.3",
     "vite": "^4.5.2",
     "vite-plugin-svgr": "^3.3.0",
-    "vite-tsconfig-paths": "^4.3.1",
-    "vitest": "^1.2.2"
+    "vite-tsconfig-paths": "^4.3.1"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx}": "eslint --fix"
