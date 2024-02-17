@@ -1,3 +1,4 @@
+import { em } from "@mantine/core";
 import { css, keyframes } from "styled-components";
 
 /**
@@ -6,33 +7,29 @@ import { css, keyframes } from "styled-components";
  * @param omitUnit flag representing whether "rem" units should be ignored.
  * @returns string containing rem equivalent of pixel value.
  */
-export const rem = (value: number, omitUnit = false) => {
-  return value === 0 ? "0" : `${value / 16}${omitUnit === true ? "" : "rem"}`;
-};
+// export const rem = (value: number, omitUnit = false) => {
+//   return value === 0 ? "0" : `${value / 16}${omitUnit === true ? "" : "rem"}`;
+// };
 
-export const alpha = (color: string, opacity = 1) =>
-  `color-mix(in srgb, ${color} ${opacity * 100}%, rgb(0,0,0,0))`;
+// export const alpha = (color: string, opacity = 1) =>
+//   `color-mix(in srgb, ${color} ${opacity * 100}%, rgb(0,0,0,0))`;
 
 // Breakpoints (mobile up)
 export const bp = {
-  small: `${rem(768, true)}em`,
-  medium: `${rem(1024, true)}em`,
-  large1: `${rem(1200, true)}em`,
-  large2: `${rem(1440, true)}em`,
-  large3: `${rem(1600, true)}em`,
-  large4: `${rem(1920, true)}em`,
-  extreme: `${rem(2100, true)}em`,
+  xs: `${em(576)}`,
+  sm: `${em(768)}`,
+  md: `${em(992)}`,
+  lg: `${em(1200)}`,
+  xl: `${em(1408)}`,
 };
 
 // Media queries
 export const mq = {
-  small: `(min-width: ${bp.small})`,
-  medium: `(min-width: ${bp.medium})`,
-  large1: `(min-width: ${bp.large1})`,
-  large2: `(min-width: ${bp.large2})`,
-  large3: `(min-width: ${bp.large3})`,
-  large4: `(min-width: ${bp.large4})`,
-  extreme: `(min-width: ${bp.extreme})`,
+  xs: `(min-width: ${bp.xs})`,
+  sm: `(min-width: ${bp.sm})`,
+  md: `(min-width: ${bp.md})`,
+  lg: `(min-width: ${bp.lg})`,
+  xl: `(min-width: ${bp.xl})`,
 };
 
 /*********************************************************************
