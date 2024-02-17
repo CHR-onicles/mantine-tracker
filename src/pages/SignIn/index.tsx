@@ -9,12 +9,36 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
+import { useForm , zodResolver } from "@mantine/form";
+import { z } from "zod";
 
 import { StyledSignIn } from "./SignIn.styled";
 
 
 export const SignIn = () => {
   const navigate = useNavigate();
+
+  const schema = z.object({
+    email: z
+      .string({ required_error: "Email is required" })
+      .min(1)
+      .email({ message: "Invalid email" }),
+    password: z.string().min(3, "Password has to be more than 3 characters"),
+  });
+
+  const form = useForm({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validate: zodResolver(schema),
+    validateInputOnBlur: true,
+  });
+
+  const handleSubmit = (values: typeof form.values) => {
+    console.log(values);
+    // navigate("/home");
+  };
 
   return (
     <StyledSignIn className={"wrapper"}>
@@ -23,32 +47,38 @@ export const SignIn = () => {
           Welcome back to RandoTracker!
         </Title>
 
-        <TextInput
-          label="Email address"
-          placeholder="hello@gmail.com"
-          size="md"
-        />
-        <PasswordInput
-          label="Password"
-          placeholder="Your password"
-          description="Make sure no one is spying on your keyboard"
-          mt="md"
-          size="md"
-        />
-        <Checkbox label="Keep me logged in" mt="xl" size="md" />
-        <Button fullWidth mt="xl" size="md" onClick={() => navigate("/home")}>
-          Login
-        </Button>
+        <form onSubmit={form.onSubmit(vals => handleSubmit(vals))}>
+          <TextInput
+            label="Email address"
+            placeholder="hello@gmail.com"
+            size="md"
+            withAsterisk
+            {...form.getInputProps("email")}
+          />
+          <PasswordInput
+            withAsterisk
+            label="Password"
+            placeholder="Your password"
+            description="Make sure no one is looking at your keyboard"
+            mt="md"
+            size="md"
+            {...form.getInputProps("password")}
+          />
+          <Checkbox label="Keep me logged in" mt="xl" size="sm" />
+          <Button fullWidth mt="xl" size="md" type="submit">
+            Login
+          </Button>
 
-        <Text ta="center" mt="md">
-          Don&apos;t have an account?{" "}
-          <Anchor<"a">
-            href="#"
-            fw={700}
-            onClick={event => event.preventDefault()}>
-            Register
-          </Anchor>
-        </Text>
+          <Text ta="center" mt="md">
+            Don&apos;t have an account?{" "}
+            <Anchor<"a">
+              href="#"
+              fw={700}
+              onClick={event => event.preventDefault()}>
+              Register
+            </Anchor>
+          </Text>
+        </form>
       </Paper>
     </StyledSignIn>
   );
