@@ -7,6 +7,7 @@ import {
   ScrollRestoration,
 } from "react-router-dom";
 
+import { Dashboard } from "@pages/Dashboard";
 import { SignIn } from "@pages/SignIn";
 
 
@@ -24,6 +25,7 @@ export const router = createBrowserRouter(
     <Route path="/" element={<Root />}>
       <Route index element={<Navigate to="signin" />} />
       <Route path="signin" element={<SignIn />} />
+      <Route path="dashboard" element={<Dashboard />} />
       <Route path="*" element={<h1> Oops! This page does not exist</h1>} />
     </Route>
   )

@@ -1,5 +1,8 @@
 import { em } from "@mantine/core";
+import { readLocalStorageValue } from "@mantine/hooks";
 import { css, keyframes } from "styled-components";
+
+import { COLOR_SCHEME_KEY } from "@constants/index";
 
 /**
  * Helper function to convert from px to rem (1rem = 16px by browser default).
@@ -102,6 +105,23 @@ export const lineClamp = (numOfLines: number) => css`
 `;
 
 export const media = (bp: string) => `@media screen and (min-width: ${bp})`;
+
+/**
+ * Utility to use the light color when colorScheme is "light" and dark color when colorScheme is "dark"
+ * @param colorScheme "light" or "dark" from local storage
+ * @returns lightColor or darkColor depending on colorScheme
+ */
+export const lightDark = (
+  colorScheme: string,
+  lightColor: string,
+  darkColor: string
+) => {
+  // console.log(colorScheme, "hello");
+
+  if (colorScheme && colorScheme === "light") return lightColor;
+  else if (colorScheme && colorScheme === "dark") return darkColor;
+  else return lightColor;
+};
 
 export const revealFromBottom = keyframes`
   to {

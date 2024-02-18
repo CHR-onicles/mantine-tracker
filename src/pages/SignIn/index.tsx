@@ -9,7 +9,7 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
-import { useForm , zodResolver } from "@mantine/form";
+import { useForm, zodResolver } from "@mantine/form";
 import { z } from "zod";
 
 import { StyledSignIn } from "./SignIn.styled";
@@ -28,8 +28,8 @@ export const SignIn = () => {
 
   const form = useForm({
     initialValues: {
-      email: "",
-      password: "",
+      email: "johndoe@test.com",
+      password: "123456",
     },
     validate: zodResolver(schema),
     validateInputOnBlur: true,
@@ -37,7 +37,7 @@ export const SignIn = () => {
 
   const handleSubmit = (values: typeof form.values) => {
     console.log(values);
-    // navigate("/home");
+    navigate("/dashboard");
   };
 
   return (

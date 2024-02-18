@@ -1,8 +1,10 @@
 import { RouterProvider } from "react-router-dom";
-import { createTheme,MantineProvider } from "@mantine/core";
+import { createTheme, MantineProvider } from "@mantine/core";
+import { useLocalStorage } from "@mantine/hooks";
 
 import { GlobalStyles } from "@styles/GlobalStyles.styled";
 
+import { COLOR_SCHEME_KEY } from "./constants";
 import { router } from "./router";
 
 import "@mantine/core/styles.css";
@@ -19,6 +21,11 @@ const theme = createTheme({
 });
 
 export const App = () => {
+  const [_] = useLocalStorage<"light" | "dark">({
+    key: COLOR_SCHEME_KEY,
+    defaultValue: "light",
+  });
+
   return (
     <MantineProvider theme={theme}>
       <GlobalStyles />

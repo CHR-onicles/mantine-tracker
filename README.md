@@ -2,19 +2,11 @@
 
 ## Setup checklist
 
-### CSS variables
-
-- [ ] Fonts
-- [ ] Colors
-- [ ] Media queries
-- [ ] Border radius
-- [ ] Easing curves
-
 ### SEO
 
-- [ ] Page title
+- [x] Page title
 - [ ] Fav icon
-- [ ] Meta description
+- [x] Meta description
 
 ### TESTS
 
@@ -22,6 +14,6 @@
 
 ### MISCELLANEOUS
 
-- [ ] Change package name and version
-- [ ] Setup scripts
-- [ ] Modify packages
+- [x] Change package name and version
+- [x] Setup scripts
+- [x] Modify packages
