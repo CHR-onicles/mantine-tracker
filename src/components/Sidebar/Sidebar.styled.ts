@@ -1,7 +1,12 @@
 import { rem } from "@mantine/core";
 import styled from "styled-components";
 
-import { flexColumn, lightDark, size } from "@styles/Utilities.styled";
+import {
+  alignItemsCenter,
+  flexColumn,
+  lightDark,
+  size,
+} from "@styles/Utilities.styled";
 
 
 interface Props {
@@ -10,14 +15,30 @@ interface Props {
 
 export const StyledSidebar = styled.nav<Props>`
   ${flexColumn}
+  height: 100%;
 
   .navbarMain {
     flex: 1;
   }
 
+  .header {
+    padding-bottom: var(--mantine-spacing-md);
+    margin-bottom: calc(var(--mantine-spacing-md) * 1.5);
+  }
+
+  .footer {
+    padding-top: var(--mantine-spacing-sm);
+    margin-top: var(--mantine-spacing-md);
+    border-top: ${({ $colorScheme }) => `1px solid
+      ${lightDark(
+        $colorScheme,
+        "var(--mantine-color-gray-3)",
+        "var(--mantine-color-dark-4)"
+      )}`};
+  }
+
   .link {
-    display: flex;
-    align-items: center;
+    ${alignItemsCenter}
     text-decoration: none;
     font-size: var(--mantine-font-size-sm);
     color: ${({ $colorScheme }) =>

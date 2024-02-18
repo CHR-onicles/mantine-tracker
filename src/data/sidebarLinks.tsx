@@ -11,7 +11,7 @@ import {
 
 export const sidebarLinks = [
   { link: "#", label: "Dashboard", icon: IconDashboard },
-  { link: "#", label: "Billing", icon: IconReceipt2 },
+  { link: "#", label: "Transactions", icon: IconReceipt2 },
   { link: "#", label: "Security", icon: IconFingerprint },
   { link: "#", label: "SSH Keys", icon: IconKey },
   { link: "#", label: "Databases", icon: IconDatabaseImport },

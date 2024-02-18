@@ -1,8 +1,5 @@
 import { em } from "@mantine/core";
-import { readLocalStorageValue } from "@mantine/hooks";
 import { css, keyframes } from "styled-components";
-
-import { COLOR_SCHEME_KEY } from "@constants/index";
 
 /**
  * Helper function to convert from px to rem (1rem = 16px by browser default).

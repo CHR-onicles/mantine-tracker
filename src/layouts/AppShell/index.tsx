@@ -1,9 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   AppShell,
   Avatar,
   Burger,
-  Code,
   Group,
   Menu,
   rem,
@@ -33,8 +33,8 @@ interface AppShellLayoutProps {
 }
 
 const user = {
-  name: "El Dana",
-  email: "ElDana@test.dev",
+  name: "CHR-onicles",
+  email: "chr-onicles@test.dev",
   image:
     "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-1.png",
 };
@@ -46,11 +46,13 @@ export function AppShellLayout({ children }: AppShellLayoutProps) {
     key: COLOR_SCHEME_KEY,
   });
   const theme = useMantineTheme();
+  const navigate = useNavigate();
 
   return (
     <AppShell
       header={{ height: 60 }}
       navbar={{ width: 270, breakpoint: "md", collapsed: { mobile: !opened } }}
+      layout="alt"
       padding="md">
       <AppShell.Header>
         <Group h="100%" px="md" w="100%" gap="sm">
@@ -64,12 +66,10 @@ export function AppShellLayout({ children }: AppShellLayoutProps) {
           <Group
             justify="space-between"
             w={{ base: `calc(100% - 30px - 1rem)`, md: "100%" }}>
-            <Group gap={"sm"}>
-              <Title order={1} fz={22}>
-                RandoTracker
-              </Title>
-              <Code fw={700}>v0.0.1</Code>
-            </Group>
+            <Title order={2} fz={22}>
+              {/* // todo: Make this dynamic depending on page */}
+              Dashboard
+            </Title>
 
             <Menu
               width={260}
@@ -122,6 +122,7 @@ export function AppShellLayout({ children }: AppShellLayoutProps) {
                   Change account
                 </Menu.Item>
                 <Menu.Item
+                  onClick={() => navigate("/")}
                   leftSection={
                     <IconLogout
                       style={{ width: rem(16), height: rem(16) }}
@@ -159,6 +160,14 @@ export function AppShellLayout({ children }: AppShellLayoutProps) {
         </Group>
       </AppShell.Header>
       <AppShell.Navbar p="md">
+        <Group gap={7}>
+          <Burger
+            opened={opened}
+            onClick={toggle}
+            hiddenFrom="sm"
+            size="sm"></Burger>
+          <Text hiddenFrom="sm">Close</Text>
+        </Group>
         {/* Navbar
         {Array(15)
           .fill(0)
@@ -167,10 +176,7 @@ export function AppShellLayout({ children }: AppShellLayoutProps) {
           ))} */}
         <Sidebar colorScheme={colorScheme} />
       </AppShell.Navbar>
-      <AppShell.Main>
-        <p>Main</p>
-        {children}
-      </AppShell.Main>
+      <AppShell.Main>{children}</AppShell.Main>
     </AppShell>
   );
 }
