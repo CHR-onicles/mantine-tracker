@@ -1,4 +1,4 @@
-import { Box, Stack, Title } from "@mantine/core";
+import { Stack, Title } from "@mantine/core";
 
 import { AppShellLayout } from "@layouts/AppShell";
 
@@ -26,7 +26,7 @@ export const Dashboard = () => {
         </Stack>
 
         <Stack mt={"sm"}>
-          <Title order={3} fw={600} fz={20} mb={"xs"} c={"dimmed"}>
+          <Title order={3} fw={600} fz={20} mb={"0"} c={"dimmed"}>
             Recent activity
           </Title>
           <RecentActivityTable />

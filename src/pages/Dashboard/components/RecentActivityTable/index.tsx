@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   ActionIcon,
   Badge,
   Center,
+  Checkbox,
   Group,
   Menu,
+  Pagination,
   rem,
   Table,
   Text,
@@ -17,7 +19,8 @@ import {
   IconReportAnalytics,
   IconTrash,
 } from "@tabler/icons-react";
-import { createColumnHelper ,
+import {
+  createColumnHelper,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -32,6 +35,16 @@ interface Transaction {
   amount: number;
   timestamp: Date;
   action?: string;
+  _?: string;
+}
+
+function chunk<T>(array: T[], size: number): T[][] {
+  if (!array.length) {
+    return [];
+  }
+  const head = array.slice(0, size);
+  const tail = array.slice(size);
+  return [head, ...chunk(tail, size)];
 }
 
 const transactions: Transaction[] = [
@@ -97,6 +110,8 @@ const transactions: Transaction[] = [
   },
 ];
 
+const data = chunk(transactions, 5);
+
 const colors: Record<string, string> = {
   income: "green",
   investment: "blue",
@@ -105,118 +120,141 @@ const colors: Record<string, string> = {
 
 const columnHelper = createColumnHelper<Transaction>();
 
-const columns = [
-  columnHelper.accessor("id", {
-    header: "ID",
-    cell: info => `#${info.cell.getValue()}`,
-  }),
-  columnHelper.accessor("type", {
-    header: "Type",
-    cell: info => (
-      <Badge color={colors[info.cell.getValue().toLowerCase()]} variant="light">
-        {info.cell.getValue()}
-      </Badge>
-    ),
-  }),
-  columnHelper.accessor("amount", {
-    header: "Amount",
-    cell: info =>
-      `${Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(info.cell.getValue())}`,
-  }),
-  columnHelper.accessor("timestamp", {
-    header: "Timestamp",
-    cell: info => (
-      <Text c={"dimmed"}>
-        {info.cell.getValue().toLocaleString("en-US", {
-          year: "numeric",
-          month: "long",
-          day: "2-digit",
-          hourCycle: "h12",
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-        })}
-      </Text>
-    ),
-  }),
-  columnHelper.accessor("action", {
-    header: "",
-    cell: () => {
-      return (
-        <Group gap={0} justify="flex-end">
-          <ActionIcon variant="subtle" color="gray">
-            <IconPencil
-              style={{ width: rem(16), height: rem(16) }}
-              stroke={1.5}
-            />
-          </ActionIcon>
-          <Menu
-            transitionProps={{ transition: "pop" }}
-            withArrow
-            position="bottom-end"
-            withinPortal>
-            <Menu.Target>
+export const RecentActivityTable = () => {
+  const [searchFilter, setSearchFilter] = useState("");
+  const [activePage, setPage] = useState(1);
+
+  const columns = useMemo(
+    () => [
+      columnHelper.accessor("_", {
+        header: ({ table }) => (
+          <Checkbox
+            aria-label="Select row"
+            checked={table.getIsAllRowsSelected()}
+            onChange={table.getToggleAllRowsSelectedHandler()}
+            indeterminate={table.getIsSomeRowsSelected()}
+          />
+        ),
+        cell: info => (
+          <Checkbox
+            aria-label="Select row"
+            checked={info.row.getIsSelected()}
+            onChange={info.row.getToggleSelectedHandler()}
+          />
+        ),
+      }),
+      columnHelper.accessor("id", {
+        header: "ID",
+        cell: info => `#${info.cell.getValue()}`,
+      }),
+      columnHelper.accessor("type", {
+        header: "Type",
+        cell: info => (
+          <Badge
+            color={colors[info.cell.getValue().toLowerCase()]}
+            variant="light">
+            {info.cell.getValue()}
+          </Badge>
+        ),
+      }),
+      columnHelper.accessor("amount", {
+        header: "Amount",
+        cell: info =>
+          `${Intl.NumberFormat("en-US", {
+            style: "currency",
+            currency: "USD",
+          }).format(info.cell.getValue())}`,
+      }),
+      columnHelper.accessor("timestamp", {
+        header: "Timestamp",
+        cell: info => (
+          <Text c={"dimmed"}>
+            {info.cell.getValue().toLocaleString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "2-digit",
+              hourCycle: "h12",
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+            })}
+          </Text>
+        ),
+      }),
+      columnHelper.accessor("action", {
+        header: "",
+        cell: () => {
+          return (
+            <Group gap={0} justify="flex-end">
               <ActionIcon variant="subtle" color="gray">
-                <IconDots
+                <IconPencil
                   style={{ width: rem(16), height: rem(16) }}
                   stroke={1.5}
                 />
               </ActionIcon>
-            </Menu.Target>
-            <Menu.Dropdown>
-              <Menu.Item
-                leftSection={
-                  <IconMessages
-                    style={{ width: rem(16), height: rem(16) }}
-                    stroke={1.5}
-                  />
-                }>
-                Send message
-              </Menu.Item>
-              <Menu.Item
-                leftSection={
-                  <IconNote
-                    style={{ width: rem(16), height: rem(16) }}
-                    stroke={1.5}
-                  />
-                }>
-                Add note
-              </Menu.Item>
-              <Menu.Item
-                leftSection={
-                  <IconReportAnalytics
-                    style={{ width: rem(16), height: rem(16) }}
-                    stroke={1.5}
-                  />
-                }>
-                Analytics
-              </Menu.Item>
-              <Menu.Item
-                leftSection={
-                  <IconTrash
-                    style={{ width: rem(16), height: rem(16) }}
-                    stroke={1.5}
-                  />
-                }
-                color="red">
-                Delete transaction
-              </Menu.Item>
-            </Menu.Dropdown>
-          </Menu>
-        </Group>
-      );
-    },
-  }),
-];
-
-export const RecentActivityTable = () => {
-  const [searchFilter, setSearchFilter] = useState("");
+              <Menu
+                transitionProps={{ transition: "pop" }}
+                withArrow
+                position="bottom-end"
+                withinPortal>
+                <Menu.Target>
+                  <ActionIcon variant="subtle" color="gray">
+                    <IconDots
+                      style={{ width: rem(16), height: rem(16) }}
+                      stroke={1.5}
+                    />
+                  </ActionIcon>
+                </Menu.Target>
+                <Menu.Dropdown>
+                  <Menu.Item
+                    leftSection={
+                      <IconMessages
+                        style={{ width: rem(16), height: rem(16) }}
+                        stroke={1.5}
+                      />
+                    }>
+                    Send message
+                  </Menu.Item>
+                  <Menu.Item
+                    leftSection={
+                      <IconNote
+                        style={{ width: rem(16), height: rem(16) }}
+                        stroke={1.5}
+                      />
+                    }>
+                    Add note
+                  </Menu.Item>
+                  <Menu.Item
+                    leftSection={
+                      <IconReportAnalytics
+                        style={{ width: rem(16), height: rem(16) }}
+                        stroke={1.5}
+                      />
+                    }>
+                    Analytics
+                  </Menu.Item>
+                  <Menu.Item
+                    leftSection={
+                      <IconTrash
+                        style={{ width: rem(16), height: rem(16) }}
+                        stroke={1.5}
+                      />
+                    }
+                    color="red">
+                    Delete transaction
+                  </Menu.Item>
+                </Menu.Dropdown>
+              </Menu>
+            </Group>
+          );
+        },
+      }),
+    ],
+    []
+  );
 
   const table = useReactTable({
-    data: transactions,
+    data: data[activePage - 1],
     columns,
     state: {
       globalFilter: searchFilter,
@@ -266,16 +304,23 @@ export const RecentActivityTable = () => {
         <Table.Tbody>
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map(row => (
-              <Table.Tr key={row.id}>
+              <Table.Tr
+                key={row.id}
+                bg={
+                  row.getIsSelected()
+                    ? "var(--mantine-color-blue-light)"
+                    : undefined
+                }>
                 {row.getVisibleCells().map(cell => (
                   <Table.Td
                     key={cell.id}
                     className={cell.id}
-                    pr={
-                      cell.id.includes("amount") || cell.id.includes("action")
-                        ? "sm"
-                        : "xl"
-                    }
+                    // maw={cell.id.includes("type") ? "180" : "auto"}
+                    // pr={
+                    //   cell.id.includes("amount") || cell.id.includes("action")
+                    //     ? "sm"
+                    //     : "xl"
+                    // }
                     // ta={cell.id.includes("amount") ? "right" : "left"}
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -292,6 +337,12 @@ export const RecentActivityTable = () => {
           )}
         </Table.Tbody>
       </Table>
+      <Group justify="space-between" align="center" mt={"xl"}>
+        <Text c="dimmed" fz={"md"}>
+          {table.getSelectedRowModel().rows.length} of 5 rows selected
+        </Text>
+        <Pagination value={activePage} onChange={setPage} total={2} />
+      </Group>
     </Table.ScrollContainer>
   );
 };
