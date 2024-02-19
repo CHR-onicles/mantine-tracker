@@ -25,12 +25,7 @@ export const Dashboard = () => {
           <Charts />
         </Stack>
 
-        <Stack mt={"sm"}>
-          <Title order={3} fw={600} fz={20} mb={"0"} c={"dimmed"}>
-            Recent activity
-          </Title>
-          <RecentActivityTable />
-        </Stack>
+        <RecentActivityTable />
       </Stack>
     </AppShellLayout>
   );

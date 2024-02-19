@@ -1,30 +1,45 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   ActionIcon,
   Badge,
+  Button,
   Center,
   Checkbox,
+  CloseButton,
   Group,
   Menu,
   Pagination,
   rem,
+  Stack,
   Table,
   Text,
+  TextInput,
+  Title,
 } from "@mantine/core";
+import { useDebouncedValue } from "@mantine/hooks";
 import {
+  IconChevronDown,
+  IconChevronUp,
   IconDots,
   IconMessages,
   IconNote,
   IconPencil,
+  IconPlus,
   IconReportAnalytics,
+  IconSearch,
+  IconSelector,
   IconTrash,
 } from "@tabler/icons-react";
 import {
+  Column,
   createColumnHelper,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
   Row,
+  SortingState,
   useReactTable,
 } from "@tanstack/react-table";
 
@@ -36,15 +51,6 @@ interface Transaction {
   timestamp: Date;
   action?: string;
   _?: string;
-}
-
-function chunk<T>(array: T[], size: number): T[][] {
-  if (!array.length) {
-    return [];
-  }
-  const head = array.slice(0, size);
-  const tail = array.slice(size);
-  return [head, ...chunk(tail, size)];
 }
 
 const transactions: Transaction[] = [
@@ -108,9 +114,67 @@ const transactions: Transaction[] = [
     amount: 1000,
     timestamp: new Date("2023-10-15T07:45:00.000Z"),
   },
+  {
+    id: 11,
+    type: "expense",
+    amount: 450,
+    timestamp: new Date("2023-09-25T14:20:00.000Z"),
+  },
+  {
+    id: 12,
+    type: "income",
+    amount: 850,
+    timestamp: new Date("2023-09-20T09:35:00.000Z"),
+  },
+  {
+    id: 13,
+    type: "investment",
+    amount: 600,
+    timestamp: new Date("2023-09-15T11:50:00.000Z"),
+  },
+  {
+    id: 14,
+    type: "expense",
+    amount: 200,
+    timestamp: new Date("2023-09-10T13:45:00.000Z"),
+  },
+  {
+    id: 15,
+    type: "income",
+    amount: 750,
+    timestamp: new Date("2023-09-05T17:30:00.000Z"),
+  },
+  {
+    id: 16,
+    type: "investment",
+    amount: 550,
+    timestamp: new Date("2023-08-30T08:15:00.000Z"),
+  },
+  {
+    id: 17,
+    type: "income",
+    amount: 300,
+    timestamp: new Date("2023-08-25T10:40:00.000Z"),
+  },
+  {
+    id: 18,
+    type: "expense",
+    amount: 150,
+    timestamp: new Date("2023-08-20T12:55:00.000Z"),
+  },
+  {
+    id: 19,
+    type: "investment",
+    amount: 950,
+    timestamp: new Date("2023-08-15T15:10:00.000Z"),
+  },
+  {
+    id: 20,
+    type: "income",
+    amount: 400,
+    timestamp: new Date("2023-08-10T18:25:00.000Z"),
+  },
 ];
-
-const data = chunk(transactions, 5);
 
 const colors: Record<string, string> = {
   income: "green",
@@ -122,7 +186,8 @@ const columnHelper = createColumnHelper<Transaction>();
 
 export const RecentActivityTable = () => {
   const [searchFilter, setSearchFilter] = useState("");
-  const [activePage, setPage] = useState(1);
+  const [debounced] = useDebouncedValue(searchFilter, 300);
+  const [sorting, setSorting] = useState<SortingState>([]);
 
   const columns = useMemo(
     () => [
@@ -144,11 +209,11 @@ export const RecentActivityTable = () => {
         ),
       }),
       columnHelper.accessor("id", {
-        header: "ID",
-        cell: info => `#${info.cell.getValue()}`,
+        header: ({ column }) => SortButton(column, "ID"),
+        cell: info => <Text pl={"xs"}>{`#${info.cell.getValue()}`}</Text>,
       }),
       columnHelper.accessor("type", {
-        header: "Type",
+        header: ({ column }) => SortButton(column, "Type"),
         cell: info => (
           <Badge
             color={colors[info.cell.getValue().toLowerCase()]}
@@ -158,17 +223,20 @@ export const RecentActivityTable = () => {
         ),
       }),
       columnHelper.accessor("amount", {
-        header: "Amount",
-        cell: info =>
-          `${Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: "USD",
-          }).format(info.cell.getValue())}`,
+        header: ({ column }) => SortButton(column, "Amount"),
+        cell: info => (
+          <Text pl={"xs"}>
+            {Intl.NumberFormat("en-US", {
+              style: "currency",
+              currency: "USD",
+            }).format(info.cell.getValue())}
+          </Text>
+        ),
       }),
       columnHelper.accessor("timestamp", {
-        header: "Timestamp",
+        header: ({ column }) => SortButton(column, "Timestamp"),
         cell: info => (
-          <Text c={"dimmed"}>
+          <Text c={"dimmed"} pl={"xs"}>
             {info.cell.getValue().toLocaleString("en-US", {
               year: "numeric",
               month: "long",
@@ -254,13 +322,17 @@ export const RecentActivityTable = () => {
   );
 
   const table = useReactTable({
-    data: data[activePage - 1],
+    data: transactions,
     columns,
     state: {
-      globalFilter: searchFilter,
+      sorting,
+      globalFilter: debounced,
     },
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
     onGlobalFilterChange: setSearchFilter,
     globalFilterFn: (
       row: Row<Transaction>,
@@ -268,7 +340,8 @@ export const RecentActivityTable = () => {
       value: string
     ) => {
       if (columnId === "id" || columnId === "type" || columnId === "amount") {
-        return (row.getValue(columnId) as string)
+        return (row.getValue(columnId) as string | number)
+          .toString()
           .toLocaleLowerCase()
           .includes(value);
       }
@@ -276,73 +349,151 @@ export const RecentActivityTable = () => {
     },
   });
 
-  return (
-    <Table.ScrollContainer minWidth={500} maw={800}>
-      <Table verticalSpacing={"md"} striped>
-        <Table.Thead>
-          {table.getHeaderGroups().map(headerGroup => (
-            <Table.Tr key={headerGroup.id}>
-              {headerGroup.headers.map(header => {
-                return (
-                  <Table.Th
-                    // ta={header.id === "amount" ? "right" : "left"}
-                    pr={header.id === "amount" ? "sm" : "xl"}
-                    key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </Table.Th>
-                );
-              })}
-            </Table.Tr>
-          ))}
-        </Table.Thead>
+  useEffect(() => {
+    table.setPageSize(5);
+  }, []);
 
-        <Table.Tbody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map(row => (
-              <Table.Tr
-                key={row.id}
-                bg={
-                  row.getIsSelected()
-                    ? "var(--mantine-color-blue-light)"
-                    : undefined
-                }>
-                {row.getVisibleCells().map(cell => (
-                  <Table.Td
-                    key={cell.id}
-                    className={cell.id}
-                    // maw={cell.id.includes("type") ? "180" : "auto"}
-                    // pr={
-                    //   cell.id.includes("amount") || cell.id.includes("action")
-                    //     ? "sm"
-                    //     : "xl"
-                    // }
-                    // ta={cell.id.includes("amount") ? "right" : "left"}
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </Table.Td>
-                ))}
-              </Table.Tr>
-            ))
-          ) : (
-            <Table.Tr>
-              <Table.Td colSpan={columns.length} h={24} pt={"xl"}>
-                <Center>No results to display.</Center>
-              </Table.Td>
-            </Table.Tr>
-          )}
-        </Table.Tbody>
-      </Table>
-      <Group justify="space-between" align="center" mt={"xl"}>
-        <Text c="dimmed" fz={"md"}>
-          {table.getSelectedRowModel().rows.length} of 5 rows selected
-        </Text>
-        <Pagination value={activePage} onChange={setPage} total={2} />
+  return (
+    <Stack mt={"sm"}>
+      <Group justify="space-between">
+        <Title order={3} fw={600} fz={20} mb={"0"} c={"dimmed"}>
+          Recent activity
+        </Title>
+        <Group>
+          <TextInput
+            placeholder="Search..."
+            value={searchFilter}
+            onChange={event => {
+              setSearchFilter(event.currentTarget.value);
+            }}
+            leftSectionPointerEvents="none"
+            leftSection={<IconSearch size={18} />}
+            rightSection={
+              <CloseButton
+                size={"xs"}
+                aria-label="Clear input"
+                onClick={() => setSearchFilter("")}
+                style={{ display: searchFilter ? undefined : "none" }}
+              />
+            }
+          />
+          <Button leftSection={<IconPlus size={18} stroke={2} />}>
+            Create
+          </Button>
+        </Group>
       </Group>
-    </Table.ScrollContainer>
+
+      <Table.ScrollContainer minWidth={600}>
+        <Table verticalSpacing={"md"} striped>
+          <Table.Thead>
+            {table.getHeaderGroups().map(headerGroup => (
+              <Table.Tr key={headerGroup.id}>
+                {headerGroup.headers.map(header => {
+                  return (
+                    <Table.Th
+                      // ta={header.id === "amount" ? "right" : "left"}
+                      pr={header.id === "amount" ? "sm" : "xl"}
+                      key={header.id}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </Table.Th>
+                  );
+                })}
+              </Table.Tr>
+            ))}
+          </Table.Thead>
+
+          <Table.Tbody>
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map(row => (
+                <Table.Tr
+                  key={row.id}
+                  bg={
+                    row.getIsSelected()
+                      ? "var(--mantine-color-blue-light)"
+                      : undefined
+                  }>
+                  {row.getVisibleCells().map(cell => (
+                    <Table.Td
+                      key={cell.id}
+                      className={cell.id}
+                      // maw={cell.id.includes("type") ? "180" : "auto"}
+                      // pr={
+                      //   cell.id.includes("amount") || cell.id.includes("action")
+                      //     ? "sm"
+                      //     : "xl"
+                      // }
+                      // ta={cell.id.includes("amount") ? "right" : "left"}
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </Table.Td>
+                  ))}
+                </Table.Tr>
+              ))
+            ) : (
+              <Table.Tr>
+                <Table.Td colSpan={columns.length} h={24} pt={"xl"}>
+                  <Center>No results to display.</Center>
+                </Table.Td>
+              </Table.Tr>
+            )}
+          </Table.Tbody>
+        </Table>
+        <Group justify="space-between" align="center" mt={"xl"}>
+          <Text c="dimmed" fz={"md"}>
+            {table.getSelectedRowModel().rows.length} of{" "}
+            {table.getPageCount() * table.getRowModel().rows.length} rows
+            selected
+          </Text>
+          <Pagination
+            value={table.getState().pagination.pageIndex + 1}
+            onChange={val => table.setPageIndex(val - 1)}
+            onNextPage={() => table.nextPage()}
+            onPreviousPage={() => table.previousPage()}
+            total={table.getPageCount()}
+          />
+        </Group>
+      </Table.ScrollContainer>
+    </Stack>
+  );
+};
+
+const SortButton = (
+  column: Column<Transaction, string | number | Date>,
+  columnHeader: string
+) => {
+  return (
+    <Button
+      color={"gray"}
+      variant="subtle"
+      px={"xs"}
+      rightSection={
+        column.getIsSorted() === "desc" ? (
+          <IconChevronDown size={16} />
+        ) : column.getIsSorted() === "asc" ? (
+          <IconChevronUp size={16} />
+        ) : (
+          <IconSelector size={16} />
+        )
+      }
+      onClick={() => {
+        console.log(column.getIsSorted());
+        if (column.getIsSorted() === "asc") {
+          column.toggleSorting(true);
+        } else if (column.getIsSorted() === "desc") {
+          column.clearSorting();
+        } else column.toggleSorting(false);
+      }}>
+      <Text c="black" fz={14} fw={700}>
+        {columnHeader}
+      </Text>
+    </Button>
   );
 };

@@ -6,7 +6,6 @@ import {
   IconCoin,
   IconDiscount2,
   IconReceipt2,
-  IconUserPlus,
 } from "@tabler/icons-react";
 
 import { StyledOverviewCards } from "./OverviewCards.styled";
@@ -20,10 +19,10 @@ const icons = {
 };
 
 const data = [
-  { title: "Income", icon: "receipt", value: "13,456", diff: 34 },
-  { title: "Expenses", icon: "coin", value: "4,145", diff: -13 },
-  { title: "Investments", icon: "discount", value: "745", diff: 18 },
-  { title: "Mortgage & Loans", icon: "briefcase", value: "188", diff: -30 },
+  { title: "Income", icon: "receipt", value: "50,460", diff: 69 },
+  { title: "Expenses", icon: "coin", value: "20,229", diff: -17 },
+  { title: "Investments", icon: "discount", value: "2,550", diff: 15 },
+  { title: "Loans", icon: "briefcase", value: "200", diff: -90 },
 ] as const;
 
 export const OverviewCards = () => {
