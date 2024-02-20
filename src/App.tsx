@@ -8,6 +8,7 @@ import { COLOR_SCHEME_KEY } from "./constants";
 import { router } from "./router";
 
 import "@mantine/core/styles.css";
+import "@mantine/dates/styles.css";
 
 
 const theme = createTheme({

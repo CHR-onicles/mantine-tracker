@@ -11,12 +11,7 @@ export const Dashboard = () => {
   return (
     <AppShellLayout>
       <Stack gap={"3rem"}>
-        <Stack mt={"sm"}>
-          <Title order={3} fw={600} fz={20} mb={"xs"} c={"dimmed"}>
-            Overview
-          </Title>
-          <OverviewCards />
-        </Stack>
+        <OverviewCards />
 
         <Stack mt={"sm"}>
           <Title order={3} fw={600} fz={20} mb={"xs"} c={"dimmed"}>

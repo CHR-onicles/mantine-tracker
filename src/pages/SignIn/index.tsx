@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Anchor,
@@ -17,6 +18,7 @@ import { StyledSignIn } from "./SignIn.styled";
 
 export const SignIn = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const schema = z.object({
     email: z
@@ -37,7 +39,11 @@ export const SignIn = () => {
 
   const handleSubmit = (values: typeof form.values) => {
     console.log(values);
-    navigate("/dashboard");
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      navigate("/dashboard");
+    }, 2000);
   };
 
   return (
@@ -65,7 +71,7 @@ export const SignIn = () => {
             {...form.getInputProps("password")}
           />
           <Checkbox label="Keep me logged in" mt="xl" size="sm" />
-          <Button fullWidth mt="xl" size="md" type="submit">
+          <Button fullWidth mt="xl" size="md" type="submit" loading={loading}>
             Login
           </Button>
 

@@ -11,21 +11,6 @@ export const GlobalStyles = createGlobalStyle`
         -webkit-text-size-adjust: 100%;
 
         // CSS variables here ----------------------------------------
-
-        --clr-primary-400: 0;
-
-        --clr-white: hsl(0, 0%, 100%);
-        --clr-black: hsl(0, 0%, 0%);
-        --clr-gray-100: hsl(0, 0%, 97%);
-        --clr-gray-200: hsl(0, 0%, 87%);
-        --clr-gray-300: hsl(0, 0%, 77%);
-        --clr-gray-400: hsl(0, 0%, 67%);
-        --clr-gray-500: hsl(0, 0%, 57%);
-        --clr-gray-600: hsl(0, 0%, 47%);
-        --clr-gray-700: hsl(0, 0%, 37%);
-        --clr-gray-800: hsl(0, 0%, 27%);
-        --clr-gray-900: hsl(0, 0%, 17%);
-
         --font-primary: "Poppins", sans-serif;
         --font-secondary: serif;
 
@@ -34,16 +19,9 @@ export const GlobalStyles = createGlobalStyle`
         --ease-almost-linear: cubic-bezier(0.4,0.6,0.6,1);
         --ease-text-reveal: cubic-bezier(0.77, 0, 0.175, 1);
 
-        --border-radius-1: 3px;
-        --border-radius-2: 5px;
-        --border-radius-3: 10px;
-
         // APP-SPECIFIC CSS variables here ----------------------------------------
         
     }
-
-
-
 
     // Remove all animations and transitions for users
     // who have it turned off in system settings
