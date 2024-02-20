@@ -69,7 +69,7 @@ function calculatePercentageChange(oldValue: string, newValue: string): number {
   const newVal = parseInt(newValue?.replace(/,/g, ""));
 
   // console.log(oldVal, newVal);
-  const val = +(((newVal - oldVal) / oldVal) * 100);
+  const val = +(((newVal - oldVal) / oldVal) * 100).toFixed(0);
   // console.log(val);
 
   return val;
