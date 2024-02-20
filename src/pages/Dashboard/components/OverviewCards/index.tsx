@@ -27,13 +27,6 @@ const icons = {
   coin: IconCoin,
 };
 
-// const data = [
-//   { title: "Income", icon: "receipt", value: "50,460", diff: 69 },
-//   { title: "Expenses", icon: "coin", value: "20,229", diff: -17 },
-//   { title: "Investments", icon: "discount", value: "2,550", diff: 15 },
-//   { title: "Loans", icon: "briefcase", value: "200", diff: -90 },
-// ] as const;
-
 const iconMap = {
   Income: "receipt",
   Expenses: "coin",
@@ -76,15 +69,18 @@ function calculatePercentageChange(oldValue: string, newValue: string): number {
   const newVal = parseInt(newValue?.replace(/,/g, ""));
 
   // console.log(oldVal, newVal);
-  const val = +(((newVal - oldVal) / oldVal) * 100).toFixed(1);
+  const val = +(((newVal - oldVal) / oldVal) * 100);
   // console.log(val);
 
   return val;
 }
 
-export const OverviewCards = () => {
+interface OverviewCardsProps {
+  date: Date | null;
+  setDate: (arg: Date | null) => void;
+}
+export const OverviewCards = ({ date, setDate }: OverviewCardsProps) => {
   const colorScheme = "light"; // todo: Change later to use store
-  const [date, setDate] = useState<Date | null>(new Date());
   const [filteredData, setFilteredData] = useState([] as DataItem[]);
   const [prevMonthData, setPrevMonthData] = useState([] as DataItem[]);
 
@@ -107,21 +103,25 @@ export const OverviewCards = () => {
           <Icon className={"icon"} size="1.4rem" stroke={1.5} />
         </Group>
 
-        <Group align="flex-end" gap="xs" mt={25}>
-          <Text className={"value"}>{stat.value}</Text>
-          <Text
-            c={percentage > 0 ? "teal" : "red"}
-            fz="sm"
-            fw={500}
-            className={"diff"}>
-            <span>{Math.abs(percentage)}%</span>
-            <DiffIcon size="1rem" stroke={1.5} />
-          </Text>
-        </Group>
-
-        <Text fz="xs" c="dimmed" mt={7}>
-          Compared to previous month
+        <Text mt={25} className={"value"}>
+          GHS {stat.value}
         </Text>
+
+        {!prevMonthData ? null : (
+          <Group align="flex-end" gap={7}>
+            <Text
+              c={percentage > 0 ? "teal" : "red"}
+              fz="sm"
+              fw={500}
+              className={"diff"}>
+              <span>{percentage}%</span>
+              <DiffIcon size="1rem" stroke={1.5} />
+            </Text>
+            <Text fz="xs" c="dimmed" mt={7}>
+              compared to last month
+            </Text>
+          </Group>
+        )}
       </Paper>
     );
   });
@@ -180,6 +180,8 @@ export const OverviewCards = () => {
             placeholder="Pick date"
             value={date}
             onChange={setDate}
+            minDate={new Date(2020, 0, 1)}
+            maxDate={new Date(2030, 0, 1)}
           />
         </Group>
       </Group>
