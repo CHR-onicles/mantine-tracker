@@ -22,7 +22,7 @@ export const Sidebar = ({ colorScheme }: { colorScheme: "light" | "dark" }) => {
           justify="space-between"
           mt={{ base: "1rem", md: "0" }}>
           <Title order={1} fz={22} c={"blue"}>
-            RandoTracker
+            MantineTracker
           </Title>{" "}
           <Code fw={700}>v0.0.1</Code>
         </Group>

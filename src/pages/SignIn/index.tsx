@@ -50,7 +50,7 @@ export const SignIn = () => {
     <StyledSignIn className={"wrapper"}>
       <Paper className={"form"} radius={0} p={35}>
         <Title order={2} className={"title"} ta="center" mt="md" mb={50}>
-          Welcome back to RandoTracker!
+          Welcome back to MantineTracker!
         </Title>
 
         <form onSubmit={form.onSubmit(vals => handleSubmit(vals))}>

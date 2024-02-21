@@ -1,19 +1,8 @@
-# Mantine test
+# Mantine tracker
 
-## Setup checklist
+Testing Mantine UI Library with Styled Components. Loved the results and developer experience!
 
-### SEO
+## Screenshots
 
-- [x] Page title
-- [ ] Fav icon
-- [x] Meta description
-
-### TESTS
-
-- [ ] Add tests
-
-### MISCELLANEOUS
-
-- [x] Change package name and version
-- [x] Setup scripts
-- [x] Modify packages
+![Screenshot of project](./assets/screenshot-1.png)
+![Screenshot of project](./assets/screenshot-2.png)
