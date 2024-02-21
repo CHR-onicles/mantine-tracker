@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   AppShell,
   Avatar,
@@ -25,6 +25,8 @@ import { Sidebar } from "@components/Sidebar";
 
 import { COLOR_SCHEME_KEY } from "@constants/index";
 
+import { sidebarLinks } from "@data/sidebarLinks";
+
 import { StyledUnstyledButton } from "./Menu.styled";
 
 
@@ -47,6 +49,15 @@ export function AppShellLayout({ children }: AppShellLayoutProps) {
   });
   const theme = useMantineTheme();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const [pageTitle, setPageTitle] = useState("");
+
+  useEffect(() => {
+    const firstLevelLink = pathname.split("/")[1];
+    sidebarLinks.forEach(item => {
+      if (firstLevelLink === item.link) setPageTitle(item.label);
+    });
+  }, [pathname]);
 
   return (
     <AppShell
@@ -66,9 +77,8 @@ export function AppShellLayout({ children }: AppShellLayoutProps) {
           <Group
             justify="space-between"
             w={{ base: `calc(100% - 30px - 1rem)`, md: "100%" }}>
-            <Title order={2} fz={22}>
-              {/* // todo: Make this dynamic depending on page */}
-              Dashboard
+            <Title order={2} fz={22} fw={600}>
+              {pageTitle}
             </Title>
 
             <Menu

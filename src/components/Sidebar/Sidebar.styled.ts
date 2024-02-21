@@ -75,7 +75,7 @@ export const StyledSidebar = styled.nav<Props>`
       }
     }
 
-    &[data-active] {
+    &.active {
       &,
       &:hover {
         background-color: var(--mantine-color-blue-light);

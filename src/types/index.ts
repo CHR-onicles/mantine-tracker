@@ -1,6 +1,6 @@
 export interface Transaction {
   id: number;
-  type: "income" | "expense" | "investment";
+  type: "income" | "expense" | "investment" | string;
   amount: number;
   timestamp: Date;
   action?: string;

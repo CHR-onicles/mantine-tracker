@@ -10,11 +10,11 @@ import {
 
 
 export const sidebarLinks = [
-  { link: "#", label: "Dashboard", icon: IconDashboard },
-  { link: "#", label: "Transactions", icon: IconReceipt2 },
-  { link: "#", label: "Security", icon: IconFingerprint },
-  { link: "#", label: "SSH Keys", icon: IconKey },
-  { link: "#", label: "Databases", icon: IconDatabaseImport },
-  { link: "#", label: "Authentication", icon: Icon2fa },
-  { link: "#", label: "Other Settings", icon: IconSettings },
+  { link: "dashboard", label: "Dashboard", icon: IconDashboard },
+  { link: "transactions", label: "Transactions", icon: IconReceipt2 },
+  { link: "security", label: "Security", icon: IconFingerprint },
+  { link: "keys", label: "SSH Keys", icon: IconKey },
+  { link: "databases", label: "Databases", icon: IconDatabaseImport },
+  { link: "auth", label: "Authentication", icon: Icon2fa },
+  { link: "settings", label: "Other Settings", icon: IconSettings },
 ];

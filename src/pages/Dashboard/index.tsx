@@ -13,7 +13,7 @@ export const Dashboard = () => {
   return (
     <AppShellLayout>
       <Container maw={1360}>
-        <Stack gap={"3rem"} mt={"xl"}>
+        <Stack gap={"3rem"} mt={"md"}>
           <OverviewCards date={date} setDate={setDate} />
 
           <Stack mt={"sm"}>

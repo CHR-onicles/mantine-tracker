@@ -42,18 +42,14 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
-import { transactions } from "@data/transactions";
+import { colors, generateRandomTransactions } from "@data/transactions";
 
 import { Transaction } from "@customTypes/index";
 
 
-const colors: Record<string, string> = {
-  income: "green",
-  investment: "blue",
-  expense: "pink",
-};
-
 const columnHelper = createColumnHelper<Transaction>();
+
+const data = generateRandomTransactions(50);
 
 export const RecentActivityTable = () => {
   const [searchFilter, setSearchFilter] = useState("");
@@ -184,7 +180,7 @@ export const RecentActivityTable = () => {
   );
 
   const table = useReactTable({
-    data: transactions,
+    data,
     columns,
     state: {
       sorting,
@@ -213,6 +209,7 @@ export const RecentActivityTable = () => {
 
   useEffect(() => {
     table.setPageSize(5);
+    table.getColumn("timestamp")?.toggleSorting(true);
   }, []);
 
   return (
@@ -311,8 +308,7 @@ export const RecentActivityTable = () => {
         <Group justify="space-between" align="center" mt={"xl"}>
           <Text c="dimmed" fz={"md"}>
             {table.getSelectedRowModel().rows.length} of{" "}
-            {table.getPageCount() * table.getRowModel().rows.length} rows
-            selected
+            {table.getPrePaginationRowModel().rows.length} rows selected
           </Text>
           <Pagination
             value={table.getState().pagination.pageIndex + 1}
@@ -327,7 +323,7 @@ export const RecentActivityTable = () => {
   );
 };
 
-const SortButton = (
+export const SortButton = (
   column: Column<Transaction, string | number | Date>,
   columnHeader: string
 ) => {
@@ -346,7 +342,7 @@ const SortButton = (
         )
       }
       onClick={() => {
-        console.log(column.getIsSorted());
+        // console.log(column.getIsSorted());
         if (column.getIsSorted() === "asc") {
           column.toggleSorting(true);
         } else if (column.getIsSorted() === "desc") {
