@@ -31,34 +31,26 @@ export const router = createBrowserRouter(
       <Route path="dashboard" element={<Dashboard />} />
       <Route path="transactions" element={<Transactions />} />
       <Route
-        path="security"
+        path="accounts"
         element={
           <AppShellLayout>
-            <h1> W.I.P</h1>
+            <h1>🚧 W.I.P</h1>
           </AppShellLayout>
         }
       />
       <Route
-        path="keys"
+        path="budgets"
         element={
           <AppShellLayout>
-            <h1> W.I.P</h1>
+            <h1>🚧 W.I.P</h1>
           </AppShellLayout>
         }
       />
       <Route
-        path="databases"
+        path="reports"
         element={
           <AppShellLayout>
-            <h1> W.I.P</h1>
-          </AppShellLayout>
-        }
-      />
-      <Route
-        path="auth"
-        element={
-          <AppShellLayout>
-            <h1> W.I.P</h1>
+            <h1>🚧 W.I.P</h1>
           </AppShellLayout>
         }
       />
@@ -66,7 +58,7 @@ export const router = createBrowserRouter(
         path="settings"
         element={
           <AppShellLayout>
-            <h1> W.I.P</h1>
+            <h1>🚧 W.I.P</h1>
           </AppShellLayout>
         }
       />
