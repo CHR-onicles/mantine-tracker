@@ -103,7 +103,7 @@ export const OverviewCards = ({ date, setDate }: OverviewCardsProps) => {
           <Icon className={"icon"} size="1.4rem" stroke={1.5} />
         </Group>
 
-        <Text mt={25} className={"value"}>
+        <Text mt={25} fz={24} fw={600} lh={1}>
           GHS {stat.value}
         </Text>
 
@@ -113,7 +113,8 @@ export const OverviewCards = ({ date, setDate }: OverviewCardsProps) => {
               c={percentage > 0 ? "teal" : "red"}
               fz="sm"
               fw={500}
-              className={"diff"}>
+              className={"diff"}
+              lh={1}>
               <span>{percentage}%</span>
               <DiffIcon size="1rem" stroke={1.5} />
             </Text>
@@ -186,7 +187,7 @@ export const OverviewCards = ({ date, setDate }: OverviewCardsProps) => {
         </Group>
       </Group>
 
-      <StyledOverviewCards $colorScheme={colorScheme} className={"root"}>
+      <StyledOverviewCards $colorScheme={colorScheme}>
         <SimpleGrid cols={{ base: 1, xs: 2, md: 4 }}>{stats}</SimpleGrid>
       </StyledOverviewCards>
     </Stack>
