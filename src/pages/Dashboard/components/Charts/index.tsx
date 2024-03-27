@@ -18,6 +18,8 @@ export const Charts = () => {
       h={300}
       data={data}
       dataKey="month"
+      xAxisLabel="Month"
+      yAxisLabel="Amount"
       series={[
         { name: "income", color: "violet.6" },
         { name: "expenses", color: "blue.6" },
