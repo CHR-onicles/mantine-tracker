@@ -22,7 +22,7 @@
     "@tanstack/react-query": "^5.45.0",
     "@tanstack/react-query-devtools": "^5.45.0",
     "@tanstack/react-table": "^8.17.3",
-    "axios": "^1.7.2",
+    "axios": "^1.7.4",
     "dayjs": "^1.11.11",
     "mantine-form-zod-resolver": "^1.1.0",
     "react": "^18.3.1",
